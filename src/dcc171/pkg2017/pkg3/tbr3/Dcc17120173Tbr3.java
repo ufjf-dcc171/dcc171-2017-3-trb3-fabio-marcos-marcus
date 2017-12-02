@@ -5,6 +5,8 @@
  */
 package dcc171.pkg2017.pkg3.tbr3;
 
+import javax.swing.JFrame;
+
 /**
  *
  * @author fhnri
@@ -15,7 +17,10 @@ public class Dcc17120173Tbr3 {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        // TODO code application logic here
+        JanelaProjetos janela = new JanelaProjetos();
+        janela.setLocationRelativeTo(null);
+        janela.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        janela.setVisible(true);
     }
     
 }
