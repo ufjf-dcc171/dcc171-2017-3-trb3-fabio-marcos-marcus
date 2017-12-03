@@ -13,32 +13,36 @@ import java.util.Date;
  */
 public class Tarefa {
     protected int id;
-    protected Projeto proj;
+    protected Projeto projeto;
     protected String descricao;
     protected boolean status;//1 - Aberto, 2- Concluido
     protected Date inicio;
     protected Date fim;
-    protected int diasConclusão;
+    protected int diasConclusao;
     protected int percentual;
-
-    public Tarefa(int id, Projeto proj, String descricao, boolean status, Date inicio, Date fim, int diasConclusão, int percentual) {
+    
+    public Tarefa(Projeto proj){
+        this.projeto = proj;
+    }
+    
+    public Tarefa(int id, Projeto proj, String descricao, boolean status, Date inicio, Date fim, int diasConclusao, int percentual) {
         this.id = id;
-        this.proj = proj;
+        this.projeto = proj;
         this.descricao = descricao;
         this.status = status;
         this.inicio = inicio;
         this.fim = fim;
-        this.diasConclusão = diasConclusão;
+        this.diasConclusao = diasConclusao;
         this.percentual = percentual;
     }
 
     public Tarefa(Projeto proj, String descricao, boolean status, Date inicio, Date fim, int diasConclusão, int percentual) {
-        this.proj = proj;
+        this.projeto = proj;
         this.descricao = descricao;
         this.status = status;
         this.inicio = inicio;
         this.fim = fim;
-        this.diasConclusão = diasConclusão;
+        this.diasConclusao = diasConclusao;
         this.percentual = percentual;
     }
 
@@ -50,12 +54,12 @@ public class Tarefa {
         this.id = id;
     }
 
-    public Projeto getProj() {
-        return proj;
+    public Projeto getProjeto() {
+        return projeto;
     }
 
-    public void setProj(Projeto proj) {
-        this.proj = proj;
+    public void setProjeto(Projeto proj) {
+        this.projeto = proj;
     }
 
     public String getDescricao() {
@@ -66,8 +70,8 @@ public class Tarefa {
         this.descricao = descricao;
     }
 
-    public boolean isStatus() {
-        return status;
+    public boolean isFinished() {
+        return !status;
     }
 
     public void setStatus(boolean status) {
@@ -90,12 +94,12 @@ public class Tarefa {
         this.fim = fim;
     }
 
-    public int getDiasConclusão() {
-        return diasConclusão;
+    public int getDiasConclusao() {
+        return diasConclusao;
     }
 
-    public void setDiasConclusão(int diasConclusão) {
-        this.diasConclusão = diasConclusão;
+    public void setDiasConclusao(int diasConclusao) {
+        this.diasConclusao = diasConclusao;
     }
 
     public int getPercentual() {

@@ -18,6 +18,10 @@ public class Projeto {
         this.descricao = descricao;
     }
 
+    public Projeto(String descricao) {
+        this.descricao = descricao;
+    }
+
     public int getId() {
         return id;
     }
@@ -32,6 +36,15 @@ public class Projeto {
 
     public void setDescricao(String descricao) {
         this.descricao = descricao;
+    }
+
+    Object getTotalTarefas() {
+        return 0;
+    }
+    
+    @Override
+    public String toString() {
+        return this.descricao;
     }
     
 }

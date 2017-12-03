@@ -1,11 +1,15 @@
 create table PROJETO
 (
-	IDPROJETO INTEGER not null primary key,
+	IDPROJETO INTEGER not null primary key
+        GENERATED ALWAYS AS IDENTITY
+        (START WITH 1, INCREMENT BY 1), 
 	DESCRICAO VARCHAR(255)
 );
 create table TAREFA
 (
-	IDTAREFA INTEGER not null primary key,
+	IDTAREFA INTEGER not null primary key
+        GENERATED ALWAYS AS IDENTITY
+        (START WITH 1, INCREMENT BY 1),
 	IDPROJETO INTEGER,
 	DESCRICAO VARCHAR(255),
 	STATUS BOOLEAN,
@@ -16,7 +20,9 @@ create table TAREFA
 );
 create table USUARIO
 (
-	IDUSUARIO INTEGER not null primary key,
+	IDUSUARIO INTEGER not null primary key
+        GENERATED ALWAYS AS IDENTITY
+        (START WITH 1, INCREMENT BY 1),
 	NOME VARCHAR(255)
 );
 create table USUARIOTAREFA

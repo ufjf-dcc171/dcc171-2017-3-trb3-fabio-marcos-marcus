@@ -5,20 +5,62 @@
  */
 package dcc171.pkg2017.pkg3.tbr3;
 
+import java.util.ArrayList;
+import javax.swing.DefaultListModel;
+import javax.swing.JFrame;
+import javax.swing.JList;
+import javax.swing.JOptionPane;
+import javax.swing.JTable;
+import javax.swing.ListSelectionModel;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
+import javax.swing.table.DefaultTableModel;
+import models.Projeto;
+import models.ProjetoListModel;
+import models.ProjetoTableModel;
+import models.Tarefa;
+import models.TarefaTableModel;
 import percistence.DatabaseLocator;
+import percistence.ProjetoDAO;
+import percistence.TarefaDAO;
 
 /**
  *
  * @author fhnri
  */
 public class JanelaProjetos extends javax.swing.JFrame {
-
+    private ArrayList<Projeto> projetos;
     /**
      * Creates new form JanelaProjetos
      */
     public JanelaProjetos() {
         initComponents();
-        DatabaseLocator.getInstance().getConnection();
+        populaProjetos();
+        listaProjetos.addListSelectionListener(new ListSelectionListener() {
+           @Override
+           public void valueChanged(ListSelectionEvent e) {
+               
+               Projeto selecionado = listaProjetos.getSelectedValue();
+               
+               if(selecionado != null){
+                   populaTarefas(selecionado);
+               }else{
+                   tabelaTarefas.setModel( new DefaultTableModel());
+               }
+           }
+        });        
+    }
+    
+    public void populaProjetos(){
+        projetos = ProjetoDAO.getInstance().getProjetos();
+        ProjetoListModel projetoListModel = new ProjetoListModel(projetos);
+        listaProjetos.setModel(projetoListModel);
+    }
+    
+    public void populaTarefas(Projeto p){
+        
+        ArrayList<Tarefa> tarefas = TarefaDAO.getInstance().getTarefas(p);
+        tabelaTarefas.setModel(new TarefaTableModel(tarefas));
     }
 
     /**
@@ -30,116 +72,133 @@ public class JanelaProjetos extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
         jButton1 = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        tabelaTarefas = new javax.swing.JTable();
+        btnCriaTarefa = new javax.swing.JButton();
+        btnEditaTarefa = new javax.swing.JButton();
+        jScrollPane3 = new javax.swing.JScrollPane();
+        listaProjetos = new javax.swing.JList<>();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-                {null, null},
-                {null, null},
-                {null, null},
-                {null, null}
-            },
-            new String [] {
-                "Descrição", "Total de tarefas"
-            }
-        ) {
-            Class[] types = new Class [] {
-                java.lang.String.class, java.lang.Integer.class
-            };
-            boolean[] canEdit = new boolean [] {
-                false, false
-            };
-
-            public Class getColumnClass(int columnIndex) {
-                return types [columnIndex];
-            }
-
-            public boolean isCellEditable(int rowIndex, int columnIndex) {
-                return canEdit [columnIndex];
+        jButton1.setText("Novo projeto");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
             }
         });
-        jScrollPane1.setViewportView(jTable1);
-        if (jTable1.getColumnModel().getColumnCount() > 0) {
-            jTable1.getColumnModel().getColumn(1).setResizable(false);
-        }
 
-        jButton1.setText("Novo");
+        tabelaTarefas.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {},
+                {},
+                {},
+                {}
+            },
+            new String [] {
 
-        jButton2.setText("Editar");
+            }
+        ));
+        jScrollPane1.setViewportView(tabelaTarefas);
+
+        btnCriaTarefa.setText("Nova tarefa");
+        btnCriaTarefa.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnCriaTarefaActionPerformed(evt);
+            }
+        });
+
+        btnEditaTarefa.setText("Editar tarefa");
+        btnEditaTarefa.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnEditaTarefaActionPerformed(evt);
+            }
+        });
+
+        jScrollPane3.setViewportView(listaProjetos);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 390, Short.MAX_VALUE)
+                    .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 258, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jScrollPane3))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 511, Short.MAX_VALUE)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jButton2)
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(btnEditaTarefa)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jButton1)))
+                        .addComponent(btnCriaTarefa)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 246, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton1)
-                    .addComponent(jButton2))
-                .addContainerGap(14, Short.MAX_VALUE))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jButton1)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jScrollPane3))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 497, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 12, Short.MAX_VALUE)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(btnCriaTarefa)
+                            .addComponent(btnEditaTarefa))))
+                .addContainerGap())
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(JanelaProjetos.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(JanelaProjetos.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(JanelaProjetos.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(JanelaProjetos.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        String nome = JOptionPane.showInputDialog("Digite o nome do projeto");
+        if(nome.length()>0){
+            ProjetoDAO.getInstance().Save(new Projeto(nome));
+            populaProjetos();
         }
-        //</editor-fold>
+    }//GEN-LAST:event_jButton1ActionPerformed
 
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new JanelaProjetos().setVisible(true);
-            }
-        });
-    }
+    private void btnCriaTarefaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCriaTarefaActionPerformed
+        Projeto p = listaProjetos.getSelectedValue();
+        
+        if(p!=null){
+            janelaTarefa janela = new janelaTarefa(p, null);
+            janela.setLocationRelativeTo(null);
+            janela.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+            janela.setVisible(true);
+            
+        }
+    }//GEN-LAST:event_btnCriaTarefaActionPerformed
+
+    private void btnEditaTarefaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditaTarefaActionPerformed
+        Projeto p = listaProjetos.getSelectedValue();
+        ArrayList<Tarefa> tarefas = TarefaDAO.getInstance().getTarefas(p);
+        Tarefa t = tarefas.get(tabelaTarefas.getSelectedRow());
+        if(p!=null && t!=null){
+            janelaTarefa janela = new janelaTarefa(p, t);
+            janela.setLocationRelativeTo(null);
+            janela.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+            janela.setVisible(true);
+            
+        }
+    }//GEN-LAST:event_btnEditaTarefaActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnCriaTarefa;
+    private javax.swing.JButton btnEditaTarefa;
     private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTable jTable1;
+    private javax.swing.JScrollPane jScrollPane3;
+    private javax.swing.JList<Projeto> listaProjetos;
+    private javax.swing.JTable tabelaTarefas;
     // End of variables declaration//GEN-END:variables
 }
