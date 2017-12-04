@@ -40,13 +40,8 @@ public class JanelaProjetos extends javax.swing.JFrame {
            @Override
            public void valueChanged(ListSelectionEvent e) {
                
-               Projeto selecionado = listaProjetos.getSelectedValue();
+                populaTarefas();
                
-               if(selecionado != null){
-                   populaTarefas(selecionado);
-               }else{
-                   tabelaTarefas.setModel( new DefaultTableModel());
-               }
            }
         });        
     }
@@ -57,10 +52,18 @@ public class JanelaProjetos extends javax.swing.JFrame {
         listaProjetos.setModel(projetoListModel);
     }
     
-    public void populaTarefas(Projeto p){
+    public void populaTarefas(){
         
-        ArrayList<Tarefa> tarefas = TarefaDAO.getInstance().getTarefas(p);
-        tabelaTarefas.setModel(new TarefaTableModel(tarefas));
+        Projeto selecionado = listaProjetos.getSelectedValue();
+               
+        if(selecionado != null){
+            ArrayList<Tarefa> tarefas = TarefaDAO.getInstance().getTarefas(selecionado);
+            tabelaTarefas.setModel(new TarefaTableModel(tarefas));
+        }else{
+            tabelaTarefas.setModel( new DefaultTableModel());
+        }
+        
+        
     }
 
     /**
@@ -170,7 +173,7 @@ public class JanelaProjetos extends javax.swing.JFrame {
         Projeto p = listaProjetos.getSelectedValue();
         
         if(p!=null){
-            janelaTarefa janela = new janelaTarefa(p, null);
+            janelaTarefa janela = new janelaTarefa(this,p, null);
             janela.setLocationRelativeTo(null);
             janela.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
             janela.setVisible(true);
@@ -181,13 +184,15 @@ public class JanelaProjetos extends javax.swing.JFrame {
     private void btnEditaTarefaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditaTarefaActionPerformed
         Projeto p = listaProjetos.getSelectedValue();
         ArrayList<Tarefa> tarefas = TarefaDAO.getInstance().getTarefas(p);
+        
         Tarefa t = tarefas.get(tabelaTarefas.getSelectedRow());
+        
         if(p!=null && t!=null){
-            janelaTarefa janela = new janelaTarefa(p, t);
+            
+            janelaTarefa janela = new janelaTarefa(this,p, t);
             janela.setLocationRelativeTo(null);
             janela.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
             janela.setVisible(true);
-            
         }
     }//GEN-LAST:event_btnEditaTarefaActionPerformed
 

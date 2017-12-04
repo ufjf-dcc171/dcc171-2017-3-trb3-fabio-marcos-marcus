@@ -22,11 +22,14 @@ import percistence.TarefaDAO;
 public class janelaTarefa extends javax.swing.JFrame {
     public Projeto projeto=null;
     public Tarefa tarefa=null;
+    public JanelaProjetos janelaProj=null;
     SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
     /**
      * Creates new form JanelaTarefas
      */
-    public janelaTarefa(Projeto p,Tarefa t) {
+    public janelaTarefa(JanelaProjetos j,Projeto p,Tarefa t) {
+        
+        janelaProj=j;
         
         initComponents();
         
@@ -36,11 +39,11 @@ public class janelaTarefa extends javax.swing.JFrame {
         
             tarefa=t;
             descricao.setText(t.getDescricao());
-            System.out.println(t.getInicio());
             //dataInicio.setText(t.getInicio().toString());
             //dataFinal.setText(t.getFim().toString());
             percentual.setText(Integer.toString(t.getPercentual()));
             diasConclusao.setText(Integer.toString(t.getDiasConclusao()));
+            feito.setSelected(t.isFinished());
         }else{
         
             tarefa=new Tarefa(p);
@@ -72,8 +75,8 @@ public class janelaTarefa extends javax.swing.JFrame {
         diasConclusao = new javax.swing.JTextField();
         feito = new javax.swing.JCheckBox();
         jLabel6 = new javax.swing.JLabel();
-        jButton1 = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
+        btnSalvaTarefa = new javax.swing.JButton();
+        btnCancelaTarefa = new javax.swing.JButton();
         percentual = new javax.swing.JTextField();
 
         jLabel3.setText("Data do início");
@@ -92,14 +95,19 @@ public class janelaTarefa extends javax.swing.JFrame {
 
         jLabel6.setText("Percentual de conclusão");
 
-        jButton1.setText("Salvar");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        btnSalvaTarefa.setText("Salvar");
+        btnSalvaTarefa.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                btnSalvaTarefaActionPerformed(evt);
             }
         });
 
-        jButton2.setText("Cancelar");
+        btnCancelaTarefa.setText("Cancelar");
+        btnCancelaTarefa.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnCancelaTarefaActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -132,9 +140,9 @@ public class janelaTarefa extends javax.swing.JFrame {
                         .addGap(0, 0, Short.MAX_VALUE))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addGap(0, 0, Short.MAX_VALUE)
-                        .addComponent(jButton2)
+                        .addComponent(btnCancelaTarefa)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jButton1)))
+                        .addComponent(btnSalvaTarefa)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -166,17 +174,18 @@ public class janelaTarefa extends javax.swing.JFrame {
                 .addComponent(feito)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton2)
-                    .addComponent(jButton1))
+                    .addComponent(btnCancelaTarefa)
+                    .addComponent(btnSalvaTarefa))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-       tarefa.setDescricao(descricao.getText());
-       tarefa.setDiasConclusao(Integer.parseInt(diasConclusao.getText()));
+    private void btnSalvaTarefaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSalvaTarefaActionPerformed
+
+        tarefa.setDescricao(descricao.getText());
+        tarefa.setDiasConclusao(Integer.parseInt(diasConclusao.getText()));
         try {
             if(dataInicio.getText().length()>0){
                 tarefa.setInicio(sdf.parse(dataInicio.getText()));
@@ -187,20 +196,28 @@ public class janelaTarefa extends javax.swing.JFrame {
         } catch (ParseException ex) {
             Logger.getLogger(janelaTarefa.class.getName()).log(Level.SEVERE, null, ex);
         }
-       tarefa.setPercentual(Integer.parseInt(percentual.getText()));
-       tarefa.setStatus(feito.isSelected());
-       TarefaDAO.getInstance().Save(tarefa);
-    }//GEN-LAST:event_jButton1ActionPerformed
+        tarefa.setPercentual(Integer.parseInt(percentual.getText()));
+        tarefa.setStatus(feito.isSelected());
+        TarefaDAO.getInstance().Save(tarefa);
+        janelaProj.populaTarefas();
+        setVisible(false);
+        dispose();
+    }//GEN-LAST:event_btnSalvaTarefaActionPerformed
+
+    private void btnCancelaTarefaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelaTarefaActionPerformed
+        setVisible(false);
+        dispose();
+    }//GEN-LAST:event_btnCancelaTarefaActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnCancelaTarefa;
+    private javax.swing.JButton btnSalvaTarefa;
     private javax.swing.JTextField dataFinal;
     private javax.swing.JTextField dataInicio;
     private javax.swing.JTextField descricao;
     private javax.swing.JTextField diasConclusao;
     private javax.swing.JCheckBox feito;
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;

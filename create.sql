@@ -28,12 +28,13 @@ create table USUARIO
 create table USUARIOTAREFA
 (
 	IDTAREFA INTEGER not null,
-	IDUSUARIO BOOLEAN not null,
+	IDUSUARIO INTEGER not null,
 	primary key (IDTAREFA, IDUSUARIO)
 );
 create table TAREFAASSOCIADA
 (
 	IDTAREFA INTEGER not null,
 	IDTAREFAASSOCIADA INTEGER not null,
+        STATUS BOOLEAN not null,
 	primary key (IDTAREFA, IDTAREFAASSOCIADA)
 )

@@ -40,7 +40,7 @@ public class TarefaDAO {
         conn = DatabaseLocator.getInstance().getConnection();
            
         try {
-
+            
             if(tarefa.getId()>0){
 
                 stmt = conn.prepareStatement("UPDATE tarefa SET idProjeto=?,descricao=?,datainicio=?,datafinal=?,diasConclusao=?,percentual=?,status=? WHERE idTarefa=?");
@@ -50,8 +50,8 @@ public class TarefaDAO {
                 stmt.setDate(4, (Date) tarefa.getFim());
                 stmt.setInt(5, tarefa.getDiasConclusao());
                 stmt.setInt(6, tarefa.getPercentual());
-                stmt.setInt(7, tarefa.getId());
-                stmt.setBoolean(8, tarefa.isFinished());
+                stmt.setBoolean(7, tarefa.isFinished());
+                stmt.setInt(8, tarefa.getId());
                 stmt.executeUpdate();
                 
                 
@@ -124,7 +124,7 @@ public class TarefaDAO {
             
             conn = DatabaseLocator.getInstance().getConnection();
             
-            stmt = conn.prepareStatement("SELECT * FROM tarefa WHERE idProjeto=?");
+            stmt = conn.prepareStatement("SELECT * FROM tarefa WHERE idProjeto=? ORDER BY idTarefa");
             stmt.setInt(1, proj.getId());
             ResultSet rs = stmt.executeQuery();
             
