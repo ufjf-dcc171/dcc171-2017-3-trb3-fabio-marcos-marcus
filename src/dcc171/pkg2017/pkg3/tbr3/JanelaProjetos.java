@@ -58,7 +58,7 @@ public class JanelaProjetos extends javax.swing.JFrame {
         
         Projeto selecionado = listaProjetos.getSelectedValue();
         if(selecionado != null){
-            ArrayList<Tarefa> tarefas = TarefaDAO.getInstance().getTarefas(selecionado,comboView.getSelectedItem().toString(),checkDisponiveis.isSelected());
+            ArrayList<Tarefa> tarefas = TarefaDAO.getInstance().getTarefas(selecionado,comboView.getSelectedItem().toString(),checkDisponiveis.isSelected(),null);
             tabelaTarefas.setModel(new TarefaTableModel(tarefas));
         }else{
             tabelaTarefas.setModel( new DefaultTableModel());
@@ -218,7 +218,7 @@ public class JanelaProjetos extends javax.swing.JFrame {
         
         Projeto p = listaProjetos.getSelectedValue();
         
-        ArrayList<Tarefa> tarefas = TarefaDAO.getInstance().getTarefas(p,comboView.getSelectedItem().toString(),checkDisponiveis.isSelected());
+        ArrayList<Tarefa> tarefas = TarefaDAO.getInstance().getTarefas(p,comboView.getSelectedItem().toString(),checkDisponiveis.isSelected(),null);
         
         int selecionada=tabelaTarefas.getSelectedRow();
         

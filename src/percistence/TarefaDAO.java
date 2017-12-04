@@ -42,16 +42,16 @@ public class TarefaDAO {
         PreparedStatement  stmt = null;
         
         conn = DatabaseLocator.getInstance().getConnection();
-           
+        Date inicio = tarefa.getInicio()!=null ? new java.sql.Date(tarefa.getInicio().getTime()) : null;
+        Date fim = tarefa.getFim()!=null ? new java.sql.Date(tarefa.getFim().getTime()) : null;
         try {
             
             if(tarefa.getId()>0){
-                System.out.println(tarefa.getInicio().getTime());
                 stmt = conn.prepareStatement("UPDATE tarefa SET idProjeto=?,descricao=?,datainicio=?,datafinal=?,diasConclusao=?,percentual=?,status=? WHERE idTarefa=?");
                 stmt.setInt(1, tarefa.getProjeto().getId());
                 stmt.setString(2, tarefa.getDescricao());
-                stmt.setDate(3, new java.sql.Date(tarefa.getInicio().getTime()));
-                stmt.setDate(4, new java.sql.Date(tarefa.getFim().getTime()));
+                stmt.setDate(3, inicio);
+                stmt.setDate(4, fim);
                 stmt.setInt(5, tarefa.getDiasConclusao());
                 stmt.setInt(6, tarefa.getPercentual());
                 stmt.setBoolean(7, tarefa.isFinished());
@@ -67,8 +67,8 @@ public class TarefaDAO {
                 stmt = conn.prepareStatement("INSERT INTO tarefa (idProjeto,descricao,datainicio,datafinal,diasConclusao,percentual,status) values (?,?,?,?,?,?,?)",Statement.RETURN_GENERATED_KEYS);
                 stmt.setInt(1, tarefa.getProjeto().getId());
                 stmt.setString(2, tarefa.getDescricao());
-                stmt.setDate(3, new java.sql.Date(tarefa.getInicio().getTime()));
-                stmt.setDate(4, new java.sql.Date(tarefa.getFim().getTime()));
+                stmt.setDate(3, inicio);
+                stmt.setDate(4, fim);
                 stmt.setInt(5, tarefa.getDiasConclusao());
                 stmt.setInt(6, tarefa.getPercentual());
                 stmt.setBoolean(7, tarefa.isFinished());
@@ -122,7 +122,7 @@ public class TarefaDAO {
         return tarefa;
     }
     
-    public ArrayList<Tarefa> getTarefas(Projeto proj,String view,Boolean possiveisConcluir){
+    public ArrayList<Tarefa> getTarefas(Projeto proj,String view,Boolean possiveisConcluir,Tarefa t){
         Connection conn = null;
         PreparedStatement  stmt = null;
         ArrayList<Tarefa> tarefas=new ArrayList<>();
@@ -148,11 +148,14 @@ public class TarefaDAO {
             
             while(rs.next()){
                 
-                Tarefa tarefa = new Tarefa(rs.getInt("idTarefa"), proj, rs.getString("descricao"), rs.getBoolean("status"), rs.getDate("datainicio"), rs.getDate("datafinal"), rs.getInt("diasconclusao"), rs.getInt("percentual"));
-                
-                if(!possiveisConcluir || podeConcluir(tarefa)){
+                if(t==null || t.getId()!=rs.getInt("idTarefa")){
                     
-                    tarefas.add(tarefa);
+                    Tarefa tarefa = new Tarefa(rs.getInt("idTarefa"), proj, rs.getString("descricao"), rs.getBoolean("status"), rs.getDate("datainicio"), rs.getDate("datafinal"), rs.getInt("diasconclusao"), rs.getInt("percentual"));
+
+                    if(!possiveisConcluir || podeConcluir(tarefa)){
+
+                        tarefas.add(tarefa);
+                    }
                 }
                 
             }
@@ -245,6 +248,21 @@ public class TarefaDAO {
 
     }
     
+    public void deletaTarefaAssociada(Tarefa t1,Tarefa t2){
+        Connection conn = null;
+        PreparedStatement  stmt = null;
+        conn = DatabaseLocator.getInstance().getConnection();
+        try {
+            stmt = conn.prepareStatement("DELETE FROM tarefaassociada WHERE idtarefa=? AND idtarefaassociada=?");
+            stmt.setInt(1, t1.getId());
+            stmt.setInt(2, t2.getId());
+            stmt.executeUpdate();
+        } catch (SQLException ex) {
+            Logger.getLogger(TarefaDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+    }
+    
     public boolean podeConcluir(Tarefa t){
         Connection conn = null;
         PreparedStatement  stmt = null;
@@ -295,6 +313,25 @@ public class TarefaDAO {
         conn = DatabaseLocator.getInstance().getConnection();
         try {
             stmt = conn.prepareStatement("INSERT INTO usuariotarefa(idtarefa,idusuario) values(?,?)");
+            stmt.setInt(1, tarefa.getId());
+            stmt.setInt(2, usuario.getId());
+            stmt.executeUpdate();
+        } catch (SQLException ex) {
+            Logger.getLogger(TarefaDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }finally {
+            
+            closeResources(conn, stmt);
+            
+        }
+        
+    }
+    
+    public void deletaUsuarioTarefa(Tarefa tarefa,Usuario usuario) {
+        Connection conn = null;
+        PreparedStatement  stmt = null;
+        conn = DatabaseLocator.getInstance().getConnection();
+        try {
+            stmt = conn.prepareStatement("DELETE FROM usuariotarefa WHERE idtarefa=? AND idusuario=?");
             stmt.setInt(1, tarefa.getId());
             stmt.setInt(2, usuario.getId());
             stmt.executeUpdate();

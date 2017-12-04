@@ -14,6 +14,7 @@ import java.util.logging.Logger;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import models.Projeto;
 import models.Tarefa;
 import models.TarefaListModel;
@@ -115,6 +116,8 @@ public class janelaTarefa extends javax.swing.JFrame {
         jScrollPane1 = new javax.swing.JScrollPane();
         lstUsuariosTarefa = new javax.swing.JList<>();
         jButton1 = new javax.swing.JButton();
+        removeTarefaAssociada = new javax.swing.JButton();
+        removeUsuario = new javax.swing.JButton();
 
         jLabel3.setText("Data do início");
 
@@ -129,6 +132,11 @@ public class janelaTarefa extends javax.swing.JFrame {
         jLabel5.setText("Dias para a conclusão");
 
         feito.setText("Feito");
+        feito.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                feitoActionPerformed(evt);
+            }
+        });
 
         jLabel6.setText("Percentual de conclusão");
 
@@ -175,6 +183,20 @@ public class janelaTarefa extends javax.swing.JFrame {
             }
         });
 
+        removeTarefaAssociada.setText("Remove tarefa associada");
+        removeTarefaAssociada.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                removeTarefaAssociadaActionPerformed(evt);
+            }
+        });
+
+        removeUsuario.setText("Remove usuario");
+        removeUsuario.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                removeUsuarioActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -182,64 +204,66 @@ public class janelaTarefa extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane2)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jLabel8)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(removeUsuario))
+                    .addComponent(descricao)
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(jLabel7)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jComboBoxUsuarios, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jButton1))
-                            .addComponent(jLabel8))
-                        .addGap(0, 0, Short.MAX_VALUE))
-                    .addGroup(layout.createSequentialGroup()
+                            .addComponent(jLabel2)
+                            .addComponent(dataInicio, javax.swing.GroupLayout.PREFERRED_SIZE, 153, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(feito))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jScrollPane2)
-                            .addComponent(jScrollPane1)
-                            .addComponent(descricao)
+                            .addComponent(jLabel4)
+                            .addComponent(dataFinal, javax.swing.GroupLayout.PREFERRED_SIZE, 136, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel5)
+                            .addComponent(diasConclusao, javax.swing.GroupLayout.PREFERRED_SIZE, 116, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jLabel2)
-                                    .addComponent(dataInicio, javax.swing.GroupLayout.PREFERRED_SIZE, 153, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(feito))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jLabel4)
-                                    .addComponent(dataFinal, javax.swing.GroupLayout.PREFERRED_SIZE, 136, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jLabel5)
-                                    .addComponent(diasConclusao, javax.swing.GroupLayout.PREFERRED_SIZE, 116, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addComponent(jLabel6)
-                                        .addGap(0, 0, Short.MAX_VALUE))
-                                    .addComponent(percentual)))
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(jLabel1)
-                                .addGap(0, 0, Short.MAX_VALUE))
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(0, 0, Short.MAX_VALUE)
+                                .addComponent(jLabel6)
+                                .addGap(0, 14, Short.MAX_VALUE))
+                            .addComponent(percentual)))
+                    .addComponent(jScrollPane1)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                                 .addComponent(btnAddTarefaAssociada)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(btnCancelaTarefa)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(btnSalvaTarefa)))
-                        .addContainerGap())))
+                                .addComponent(btnSalvaTarefa))
+                            .addComponent(removeTarefaAssociada, javax.swing.GroupLayout.Alignment.TRAILING)))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jLabel7)
+                                .addGap(20, 20, 20)
+                                .addComponent(jComboBoxUsuarios, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(jButton1))
+                            .addComponent(jLabel1))
+                        .addGap(0, 0, Short.MAX_VALUE)))
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
+                .addComponent(jLabel1)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jLabel4)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(dataFinal, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(jLabel1)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(descricao, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jLabel2)
@@ -257,47 +281,73 @@ public class janelaTarefa extends javax.swing.JFrame {
                 .addComponent(feito)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jComboBoxUsuarios)
                     .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 19, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jComboBoxUsuarios, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jButton1))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 105, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jLabel8)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btnSalvaTarefa)
-                    .addComponent(btnCancelaTarefa)
-                    .addComponent(btnAddTarefaAssociada))
-                .addContainerGap())
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(removeUsuario)
+                        .addGap(18, 18, 18)
+                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 118, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(20, 20, 20)
+                        .addComponent(jLabel8)
+                        .addGap(129, 129, 129)
+                        .addComponent(removeTarefaAssociada)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(btnCancelaTarefa)
+                            .addComponent(btnSalvaTarefa)
+                            .addComponent(btnAddTarefaAssociada)))))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnSalvaTarefaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSalvaTarefaActionPerformed
-
-        tarefa.setDescricao(descricao.getText());
-        tarefa.setDiasConclusao(Integer.parseInt(diasConclusao.getText()));
-        try {
-            System.out.println(dataInicio.getText());
-            if(dataInicio.getText().length()>0){
-                tarefa.setInicio(sdf.parse(dataInicio.getText()));
+        if(descricao.getText().length()>0){
+            tarefa.setDescricao(descricao.getText());
+            if(diasConclusao.getText().length()>0){
+            
+                tarefa.setDiasConclusao(Integer.parseInt(diasConclusao.getText()));
+            
+            }else{
+                tarefa.setDiasConclusao(0);
             }
-            if(dataFinal.getText().length()>0){
-                tarefa.setFim(sdf.parse(dataFinal.getText()));
+            
+            try {
+                
+                if(dataInicio.getText().length()>0){
+                    tarefa.setInicio(sdf.parse(dataInicio.getText()));
+                }else{
+                    tarefa.setInicio(null);
+                }
+                if(dataFinal.getText().length()>0){
+                    tarefa.setFim(sdf.parse(dataFinal.getText()));
+                }else{
+                    tarefa.setFim(null);
+                }
+            } catch (ParseException ex) {
+                Logger.getLogger(janelaTarefa.class.getName()).log(Level.SEVERE, null, ex);
             }
-        } catch (ParseException ex) {
-            Logger.getLogger(janelaTarefa.class.getName()).log(Level.SEVERE, null, ex);
+            if(percentual.getText().length()>0){
+                tarefa.setPercentual(Integer.parseInt(percentual.getText()));
+            }else{
+                tarefa.setPercentual(0);
+            }
+            
+            tarefa.setStatus(feito.isSelected());
+            
+            TarefaDAO.getInstance().Save(tarefa);
+            janelaProj.populaTarefas();
+            setVisible(false);
+            dispose();
+        }else{
+            JOptionPane.showMessageDialog(new JFrame(), "A descrição da tarefa não pode ficar em branco.", "Erro",JOptionPane.ERROR_MESSAGE);            
         }
-        tarefa.setPercentual(Integer.parseInt(percentual.getText()));
-        tarefa.setStatus(feito.isSelected());
-        TarefaDAO.getInstance().Save(tarefa);
-        janelaProj.populaTarefas();
-        setVisible(false);
-        dispose();
     }//GEN-LAST:event_btnSalvaTarefaActionPerformed
 
     public void exibeUsuarios(){
@@ -309,6 +359,16 @@ public class janelaTarefa extends javax.swing.JFrame {
             usuarios.addElement(aux);
         }
         jComboBoxUsuarios.setModel(new DefaultComboBoxModel<Usuario>(usuarios)); 
+    }
+    
+    public void uncheckFeito(){
+        if(tarefa.isFinished()){
+            tarefa.setStatus(false);
+            TarefaDAO.getInstance().Save(tarefa);
+            feito.setSelected(false);
+            janelaProj.populaTarefas();
+            JOptionPane.showMessageDialog(new JFrame(), "A tarefa foi desmarcada como feita, pois há tarefas pendentes.", "Erro",JOptionPane.ERROR_MESSAGE);            
+        }
     }
     
     
@@ -332,7 +392,31 @@ public class janelaTarefa extends javax.swing.JFrame {
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         TarefaDAO.getInstance().adicionaUsuarioTarefa(tarefa, (Usuario) jComboBoxUsuarios.getSelectedItem());
+        populaUsuariosTarefas();
     }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void feitoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_feitoActionPerformed
+        if(!TarefaDAO.getInstance().podeConcluir(tarefa)){
+            feito.setSelected(false);
+            JOptionPane.showMessageDialog(new JFrame(), "Está tarefa não pode ser concluída, pois há tarefas relacionadas pendentes.", "Erro",JOptionPane.ERROR_MESSAGE);            
+        }
+    }//GEN-LAST:event_feitoActionPerformed
+
+    private void removeUsuarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_removeUsuarioActionPerformed
+        Usuario usuario = lstUsuariosTarefa.getSelectedValue();
+        if(usuario!=null){
+            TarefaDAO.getInstance().deletaUsuarioTarefa(tarefa, usuario);
+            populaUsuariosTarefas();
+        }
+    }//GEN-LAST:event_removeUsuarioActionPerformed
+
+    private void removeTarefaAssociadaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_removeTarefaAssociadaActionPerformed
+       Tarefa tarefaAssociada = lstTarefasAssociadas.getSelectedValue();
+       if(tarefaAssociada!=null){
+            TarefaDAO.getInstance().deletaTarefaAssociada(tarefa, tarefaAssociada);
+            populaTarefasAssociada();
+       }
+    }//GEN-LAST:event_removeTarefaAssociadaActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -360,5 +444,7 @@ public class janelaTarefa extends javax.swing.JFrame {
     private javax.swing.JList<Tarefa> lstTarefasAssociadas;
     private javax.swing.JList<Usuario> lstUsuariosTarefa;
     private javax.swing.JTextField percentual;
+    private javax.swing.JButton removeTarefaAssociada;
+    private javax.swing.JButton removeUsuario;
     // End of variables declaration//GEN-END:variables
 }

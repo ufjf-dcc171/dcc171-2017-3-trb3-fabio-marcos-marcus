@@ -29,7 +29,7 @@ public class JanelaTarefas extends javax.swing.JFrame {
     }
     
     public void populaTarefas(){
-        ArrayList<Tarefa> tarefas = TarefaDAO.getInstance().getTarefas(tarefa.getProjeto(),"",false);
+        ArrayList<Tarefa> tarefas = TarefaDAO.getInstance().getTarefas(tarefa.getProjeto(),"",false,tarefa);
         listTarefas.setModel(new TarefaListModel(tarefas));
     }
 
@@ -103,6 +103,9 @@ public class JanelaTarefas extends javax.swing.JFrame {
             janela.populaTarefasAssociada();
             setVisible(false);
             dispose();
+            if(!t.isFinished()){
+                janela.uncheckFeito();
+            }
             
         }
     }//GEN-LAST:event_jButton1ActionPerformed
