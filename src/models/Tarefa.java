@@ -5,7 +5,9 @@
  */
 package models;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 /**
  *
@@ -20,6 +22,7 @@ public class Tarefa {
     protected Date fim;
     protected int diasConclusao;
     protected int percentual;
+    protected List<Usuario> usuarios;
     
     public Tarefa(Projeto proj){
         this.projeto = proj;
@@ -34,6 +37,7 @@ public class Tarefa {
         this.fim = fim;
         this.diasConclusao = diasConclusao;
         this.percentual = percentual;
+        this.usuarios = new ArrayList<Usuario>();
     }
 
     public Tarefa(Projeto proj, String descricao, boolean status, Date inicio, Date fim, int diasConclusão, int percentual) {
@@ -44,6 +48,17 @@ public class Tarefa {
         this.fim = fim;
         this.diasConclusao = diasConclusao;
         this.percentual = percentual;
+        this.usuarios = new ArrayList<Usuario>();
+    }
+    public Tarefa(Projeto proj, String descricao, boolean status, Date inicio, Date fim, int diasConclusão, int percentual, Usuario u) {
+        this.projeto = proj;
+        this.descricao = descricao;
+        this.status = status;
+        this.inicio = inicio;
+        this.fim = fim;
+        this.diasConclusao = diasConclusao;
+        this.percentual = percentual;
+        this.usuarios.add(u);
     }
 
     public int getId() {
@@ -115,5 +130,12 @@ public class Tarefa {
         String feito=this.isFinished()?"Feito":"Pendente";
         return this.descricao+" ("+feito+")";
     }
-    
+
+    public List<Usuario> getUsuarios() {
+        return usuarios;
+    }
+
+    public void setUsuarios(List<Usuario> usuarios) {
+        this.usuarios = usuarios;
+    }
 }

@@ -22,6 +22,5 @@ public class Dcc17120173Tbr3 {
         janela.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         janela.setVisible(true);
         System.out.println("Modificação");
-    }
-    
+    }   
 }

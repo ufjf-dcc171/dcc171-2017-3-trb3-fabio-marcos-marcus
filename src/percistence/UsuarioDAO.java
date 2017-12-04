@@ -12,6 +12,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import models.Usuario;
@@ -21,62 +22,89 @@ import models.Usuario;
  * @author fhnri
  */
 public class UsuarioDAO {
-     private static UsuarioDAO instance = new UsuarioDAO();
-    
-    private UsuarioDAO(){}
-    
-    public static UsuarioDAO getInstance(){
+
+    private static UsuarioDAO instance = new UsuarioDAO();
+
+    private UsuarioDAO() {
+    }
+
+    public static UsuarioDAO getInstance() {
         return instance;
     }
-    
-    public void Save(Usuario usuario){
-        
+
+    public void Save(Usuario usuario) {
+
         Connection conn = null;
-        
-        PreparedStatement  stmt = null;
-        
+
+        PreparedStatement stmt = null;
+
         conn = DatabaseLocator.getInstance().getConnection();
-           
+
         try {
 
-            if(usuario.getId()>0){
+            if (usuario.getId() > 0) {
 
                 stmt = conn.prepareStatement("UPDATE usuario SET nome=? WHERE idUsuario=?");
                 stmt.setString(1, usuario.getNome());
                 stmt.setInt(2, usuario.getId());
                 stmt.executeUpdate();
-                
-            }else{
-                
-                stmt = conn.prepareStatement("INSERT INTO usuario(nome) values (?)",Statement.RETURN_GENERATED_KEYS);
+
+            } else {
+
+                stmt = conn.prepareStatement("INSERT INTO usuario(nome) values (?)", Statement.RETURN_GENERATED_KEYS);
                 stmt.setString(1, usuario.getNome());
                 stmt.executeUpdate();
-                
+
                 ResultSet genKeys = stmt.getGeneratedKeys();
                 genKeys.next();
 
-                int idUsuario = genKeys.getInt(1);            
+                int idUsuario = genKeys.getInt(1);
                 usuario.setId(idUsuario);
             }
-            
+
         } catch (SQLException ex) {
             Logger.getLogger(UsuarioDAO.class.getName()).log(Level.SEVERE, null, ex);
-        }finally {
-            
+        } finally {
+
             closeResources(conn, stmt);
-            
+
         }
-        
+
     }
-    
-    
-    public void closeResources(Connection conn, Statement st){
-        try {
-            if(st!=null) st.close();
-            if(conn!=null) conn.close();
 
-        } catch(SQLException e) {
+    public void closeResources(Connection conn, Statement st) {
+        try {
+            if (st != null) {
+                st.close();
+            }
+            if (conn != null) {
+                conn.close();
+            }
+
+        } catch (SQLException e) {
 
         }
+    }
+
+    public ArrayList<Usuario> getUsuarios() {
+
+        Connection conn = null;
+        PreparedStatement stmt = null;
+        ArrayList<Usuario> usuarios = new ArrayList<>();
+        try {
+            conn = DatabaseLocator.getInstance().getConnection();
+            stmt = conn.prepareStatement("SELECT nome FROM usuario");
+            ResultSet rs = stmt.executeQuery();
+            while (rs.next()) {
+                
+                Usuario usuario = new Usuario(rs.getString("nome"));
+                usuarios.add(usuario);
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(UsuarioDAO.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            closeResources(conn, stmt);
+        }
+        return usuarios;
     }
 }

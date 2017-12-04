@@ -20,9 +20,11 @@ import models.ProjetoListModel;
 import models.ProjetoTableModel;
 import models.Tarefa;
 import models.TarefaTableModel;
+import models.Usuario;
 import percistence.DatabaseLocator;
 import percistence.ProjetoDAO;
 import percistence.TarefaDAO;
+import percistence.UsuarioDAO;
 
 /**
  *
@@ -61,8 +63,6 @@ public class JanelaProjetos extends javax.swing.JFrame {
         }else{
             tabelaTarefas.setModel( new DefaultTableModel());
         }
-        
-        
     }
 
     /**
@@ -83,6 +83,7 @@ public class JanelaProjetos extends javax.swing.JFrame {
         listaProjetos = new javax.swing.JList<>();
         comboView = new javax.swing.JComboBox<>();
         checkDisponiveis = new javax.swing.JCheckBox();
+        jButton2 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -136,6 +137,13 @@ public class JanelaProjetos extends javax.swing.JFrame {
             }
         });
 
+        jButton2.setText("Adicionar Usuario");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -149,6 +157,8 @@ public class JanelaProjetos extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(jButton2)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(btnEditaTarefa)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(btnCriaTarefa))
@@ -175,7 +185,8 @@ public class JanelaProjetos extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(btnCriaTarefa)
-                            .addComponent(btnEditaTarefa)))
+                            .addComponent(btnEditaTarefa)
+                            .addComponent(jButton2)))
                     .addComponent(jScrollPane3))
                 .addContainerGap())
         );
@@ -228,6 +239,12 @@ public class JanelaProjetos extends javax.swing.JFrame {
         populaTarefas();
     }//GEN-LAST:event_checkDisponiveisActionPerformed
 
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        String nome = JOptionPane.showInputDialog("Digite o nome do usuario");
+        UsuarioDAO.getInstance().Save(new Usuario(nome));
+        
+    }//GEN-LAST:event_jButton2ActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnCriaTarefa;
@@ -235,6 +252,7 @@ public class JanelaProjetos extends javax.swing.JFrame {
     private javax.swing.JCheckBox checkDisponiveis;
     private javax.swing.JComboBox<String> comboView;
     private javax.swing.JButton jButton1;
+    private javax.swing.JButton jButton2;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JList<Projeto> listaProjetos;
