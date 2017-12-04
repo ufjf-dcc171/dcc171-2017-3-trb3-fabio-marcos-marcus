@@ -215,18 +215,24 @@ public class JanelaProjetos extends javax.swing.JFrame {
     }//GEN-LAST:event_btnCriaTarefaActionPerformed
 
     private void btnEditaTarefaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditaTarefaActionPerformed
+        
         Projeto p = listaProjetos.getSelectedValue();
         
         ArrayList<Tarefa> tarefas = TarefaDAO.getInstance().getTarefas(p,comboView.getSelectedItem().toString(),checkDisponiveis.isSelected());
         
-        Tarefa t = tarefas.get(tabelaTarefas.getSelectedRow());
+        int selecionada=tabelaTarefas.getSelectedRow();
         
-        if(p!=null && t!=null){
-            
-            janelaTarefa janela = new janelaTarefa(this,p, t);
-            janela.setLocationRelativeTo(null);
-            janela.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-            janela.setVisible(true);
+        if(selecionada>=0){
+         
+            Tarefa t = tarefas.get(selecionada);       
+        
+            if(p!=null && t!=null){
+
+                janelaTarefa janela = new janelaTarefa(this,p, t);
+                janela.setLocationRelativeTo(null);
+                janela.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+                janela.setVisible(true);
+            }
         }
         
     }//GEN-LAST:event_btnEditaTarefaActionPerformed

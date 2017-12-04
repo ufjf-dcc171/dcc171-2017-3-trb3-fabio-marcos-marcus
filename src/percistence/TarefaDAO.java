@@ -18,6 +18,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import models.Projeto;
 import models.Tarefa;
+import models.Usuario;
 
 /**
  *
@@ -286,5 +287,56 @@ public class TarefaDAO {
         } catch(SQLException e) {
 
         }
+    }
+
+    public void adicionaUsuarioTarefa(Tarefa tarefa,Usuario usuario) {
+        Connection conn = null;
+        PreparedStatement  stmt = null;
+        conn = DatabaseLocator.getInstance().getConnection();
+        try {
+            stmt = conn.prepareStatement("INSERT INTO usuariotarefa(idtarefa,idusuario) values(?,?)");
+            stmt.setInt(1, tarefa.getId());
+            stmt.setInt(2, usuario.getId());
+            stmt.executeUpdate();
+        } catch (SQLException ex) {
+            Logger.getLogger(TarefaDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }finally {
+            
+            closeResources(conn, stmt);
+            
+        }
+        
+    }
+
+    public ArrayList<Usuario> getUsuariosTarefas(Tarefa tarefa) {
+        Connection conn = null;
+        PreparedStatement  stmt = null;
+        ArrayList<Usuario> usuarios=new ArrayList<>();
+        
+        try {
+            
+            conn = DatabaseLocator.getInstance().getConnection();
+            System.out.println(tarefa.getId());
+            stmt = conn.prepareStatement("SELECT usuario.* FROM usuariotarefa LEFT JOIN usuario ON usuario.idUsuario=usuariotarefa.idUsuario WHERE usuariotarefa.idtarefa=?");
+            stmt.setInt(1, tarefa.getId());
+            
+            ResultSet rs = stmt.executeQuery();
+            
+            while(rs.next()){
+                
+                usuarios.add(new Usuario(rs.getInt("idUsuario"), rs.getString("Nome")));
+                
+            }
+            
+            
+        } catch (SQLException ex) {
+            Logger.getLogger(TarefaDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }finally {
+            
+            closeResources(conn, stmt);
+            
+        }
+        
+        return usuarios;
     }
 }

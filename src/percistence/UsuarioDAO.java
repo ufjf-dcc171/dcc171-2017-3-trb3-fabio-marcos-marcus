@@ -93,11 +93,11 @@ public class UsuarioDAO {
         ArrayList<Usuario> usuarios = new ArrayList<>();
         try {
             conn = DatabaseLocator.getInstance().getConnection();
-            stmt = conn.prepareStatement("SELECT nome FROM usuario");
+            stmt = conn.prepareStatement("SELECT idUsuario,nome FROM usuario");
             ResultSet rs = stmt.executeQuery();
             while (rs.next()) {
                 
-                Usuario usuario = new Usuario(rs.getString("nome"));
+                Usuario usuario = new Usuario(rs.getInt("idUsuario"),rs.getString("nome"));
                 usuarios.add(usuario);
             }
         } catch (SQLException ex) {
