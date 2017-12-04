@@ -84,6 +84,7 @@ public class JanelaProjetos extends javax.swing.JFrame {
         comboView = new javax.swing.JComboBox<>();
         checkDisponiveis = new javax.swing.JCheckBox();
         jButton2 = new javax.swing.JButton();
+        removeTarefa = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -144,6 +145,13 @@ public class JanelaProjetos extends javax.swing.JFrame {
             }
         });
 
+        removeTarefa.setText("Remover tarefa");
+        removeTarefa.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                removeTarefaActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -157,6 +165,8 @@ public class JanelaProjetos extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(removeTarefa)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jButton2)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(btnEditaTarefa)
@@ -186,7 +196,8 @@ public class JanelaProjetos extends javax.swing.JFrame {
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(btnCriaTarefa)
                             .addComponent(btnEditaTarefa)
-                            .addComponent(jButton2)))
+                            .addComponent(jButton2)
+                            .addComponent(removeTarefa)))
                     .addComponent(jScrollPane3))
                 .addContainerGap())
         );
@@ -251,6 +262,28 @@ public class JanelaProjetos extends javax.swing.JFrame {
         
     }//GEN-LAST:event_jButton2ActionPerformed
 
+    private void removeTarefaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_removeTarefaActionPerformed
+         Projeto p = listaProjetos.getSelectedValue();
+        
+        ArrayList<Tarefa> tarefas = TarefaDAO.getInstance().getTarefas(p,comboView.getSelectedItem().toString(),checkDisponiveis.isSelected(),null);
+        
+        int selecionada=tabelaTarefas.getSelectedRow();
+        
+        if(selecionada>=0){
+         
+            Tarefa t = tarefas.get(selecionada);       
+        
+            if(p!=null && t!=null){
+
+              TarefaDAO.getInstance().deletaTarefa(t);
+              populaTarefas();
+              listaProjetos.updateUI();
+            }
+            
+        }
+        
+    }//GEN-LAST:event_removeTarefaActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnCriaTarefa;
@@ -262,6 +295,7 @@ public class JanelaProjetos extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JList<Projeto> listaProjetos;
+    private javax.swing.JButton removeTarefa;
     private javax.swing.JTable tabelaTarefas;
     // End of variables declaration//GEN-END:variables
 }

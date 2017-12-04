@@ -375,5 +375,29 @@ public class TarefaDAO {
         }
         
         return usuarios;
+        
+    }
+    
+    public void deletaTarefa(Tarefa tarefa){
+        Connection conn = null;
+        PreparedStatement  stmt = null;
+        conn = DatabaseLocator.getInstance().getConnection();
+        try {
+            stmt = conn.prepareStatement("DELETE FROM usuariotarefa WHERE idtarefa=?");
+            stmt.setInt(1, tarefa.getId());
+            stmt = conn.prepareStatement("DELETE FROM tarefaassociada WHERE idtarefa=?");
+            stmt.setInt(1, tarefa.getId());
+            stmt = conn.prepareStatement("DELETE FROM tarefaassociada WHERE idtarefaassociada=?");
+            stmt.setInt(1, tarefa.getId());
+            stmt = conn.prepareStatement("DELETE FROM tarefa WHERE idtarefa=?");
+            stmt.setInt(1, tarefa.getId());
+            stmt.executeUpdate();
+        } catch (SQLException ex) {
+            Logger.getLogger(TarefaDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }finally {
+            
+            closeResources(conn, stmt);
+            
+        }
     }
 }
