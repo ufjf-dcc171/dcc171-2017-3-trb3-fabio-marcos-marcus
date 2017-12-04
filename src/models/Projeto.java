@@ -5,6 +5,8 @@
  */
 package models;
 
+import percistence.TarefaDAO;
+
 /**
  *
  * @author fhnri
@@ -44,7 +46,7 @@ public class Projeto {
     
     @Override
     public String toString() {
-        return this.descricao;
+        return this.descricao+" ("+TarefaDAO.getInstance().totalTarefas(this)+" tarefas)";
     }
     
 }

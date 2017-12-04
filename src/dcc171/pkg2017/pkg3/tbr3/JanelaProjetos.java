@@ -55,9 +55,8 @@ public class JanelaProjetos extends javax.swing.JFrame {
     public void populaTarefas(){
         
         Projeto selecionado = listaProjetos.getSelectedValue();
-               
         if(selecionado != null){
-            ArrayList<Tarefa> tarefas = TarefaDAO.getInstance().getTarefas(selecionado);
+            ArrayList<Tarefa> tarefas = TarefaDAO.getInstance().getTarefas(selecionado,comboView.getSelectedItem().toString());
             tabelaTarefas.setModel(new TarefaTableModel(tarefas));
         }else{
             tabelaTarefas.setModel( new DefaultTableModel());
@@ -82,6 +81,8 @@ public class JanelaProjetos extends javax.swing.JFrame {
         btnEditaTarefa = new javax.swing.JButton();
         jScrollPane3 = new javax.swing.JScrollPane();
         listaProjetos = new javax.swing.JList<>();
+        comboView = new javax.swing.JComboBox<>();
+        checkDisponiveis = new javax.swing.JCheckBox();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -121,6 +122,15 @@ public class JanelaProjetos extends javax.swing.JFrame {
 
         jScrollPane3.setViewportView(listaProjetos);
 
+        comboView.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Todos", "Feitos", "Pendentes" }));
+        comboView.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                comboViewActionPerformed(evt);
+            }
+        });
+
+        checkDisponiveis.setText("Somente tarefas que podem ser feitas");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -130,31 +140,38 @@ public class JanelaProjetos extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 258, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jScrollPane3))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 511, Short.MAX_VALUE)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                    .addGroup(layout.createSequentialGroup()
                         .addGap(0, 0, Short.MAX_VALUE)
                         .addComponent(btnEditaTarefa)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(btnCriaTarefa)))
+                        .addComponent(btnCriaTarefa))
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 507, Short.MAX_VALUE)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(comboView, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(checkDisponiveis)
+                        .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jButton1)
+                    .addComponent(comboView, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(checkDisponiveis))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(jButton1)
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 451, Short.MAX_VALUE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jScrollPane3))
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 497, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 12, Short.MAX_VALUE)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(btnCriaTarefa)
-                            .addComponent(btnEditaTarefa))))
+                            .addComponent(btnEditaTarefa)))
+                    .addComponent(jScrollPane3))
                 .addContainerGap())
         );
 
@@ -183,7 +200,8 @@ public class JanelaProjetos extends javax.swing.JFrame {
 
     private void btnEditaTarefaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditaTarefaActionPerformed
         Projeto p = listaProjetos.getSelectedValue();
-        ArrayList<Tarefa> tarefas = TarefaDAO.getInstance().getTarefas(p);
+        
+        ArrayList<Tarefa> tarefas = TarefaDAO.getInstance().getTarefas(p,comboView.getSelectedItem().toString());
         
         Tarefa t = tarefas.get(tabelaTarefas.getSelectedRow());
         
@@ -194,12 +212,19 @@ public class JanelaProjetos extends javax.swing.JFrame {
             janela.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
             janela.setVisible(true);
         }
+        
     }//GEN-LAST:event_btnEditaTarefaActionPerformed
+
+    private void comboViewActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_comboViewActionPerformed
+        populaTarefas();
+    }//GEN-LAST:event_comboViewActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnCriaTarefa;
     private javax.swing.JButton btnEditaTarefa;
+    private javax.swing.JCheckBox checkDisponiveis;
+    private javax.swing.JComboBox<String> comboView;
     private javax.swing.JButton jButton1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane3;

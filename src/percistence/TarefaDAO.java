@@ -115,7 +115,7 @@ public class TarefaDAO {
         return tarefa;
     }
     
-    public ArrayList<Tarefa> getTarefas(Projeto proj){
+    public ArrayList<Tarefa> getTarefas(Projeto proj,String view){
         Connection conn = null;
         PreparedStatement  stmt = null;
         ArrayList<Tarefa> tarefas=new ArrayList<>();
@@ -123,9 +123,20 @@ public class TarefaDAO {
         try {
             
             conn = DatabaseLocator.getInstance().getConnection();
+
+            if(view=="Todos" || view==""){
             
-            stmt = conn.prepareStatement("SELECT * FROM tarefa WHERE idProjeto=? ORDER BY idTarefa");
-            stmt.setInt(1, proj.getId());
+                stmt = conn.prepareStatement("SELECT * FROM tarefa WHERE idProjeto=? ORDER BY idTarefa");
+                stmt.setInt(1, proj.getId());
+                
+            }else{
+                boolean status=view=="Feitos"?false:true;
+                stmt = conn.prepareStatement("SELECT * FROM tarefa WHERE idProjeto=? AND status=? ORDER BY idTarefa");
+                stmt.setInt(1, proj.getId());
+                stmt.setBoolean(2, status);
+                
+            }
+            
             ResultSet rs = stmt.executeQuery();
             
             while(rs.next()){
@@ -146,6 +157,81 @@ public class TarefaDAO {
         return tarefas;
     }
     
+    public int totalTarefas(Projeto p){
+        Connection conn = null;
+        PreparedStatement  stmt = null;
+        int total=0;
+        try {
+            
+            conn = DatabaseLocator.getInstance().getConnection();
+            
+            stmt = conn.prepareStatement("SELECT COUNT(*) As Total FROM tarefa WHERE idProjeto=?");
+            
+            stmt.setInt(1, p.getId());
+            
+            ResultSet rs = stmt.executeQuery();
+            
+            while(rs.next()){
+                total = rs.getInt("Total");
+            }
+            
+        } catch (SQLException ex) {
+            Logger.getLogger(TarefaDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }finally {
+            
+            closeResources(conn, stmt);
+            
+        }
+        return total;
+    }
+    
+    public ArrayList<Tarefa> getTarefasAssocidas(Tarefa t){
+        Connection conn = null;
+        PreparedStatement  stmt = null;
+        ArrayList<Tarefa> tarefas=new ArrayList<>();
+        
+        try {
+            
+            conn = DatabaseLocator.getInstance().getConnection();
+
+            stmt = conn.prepareStatement("SELECT tarefa.* FROM tarefaassociada LEFT JOIN tarefa ON tarefa.idTarefa=tarefaAssociada.idtarefaassociada WHERE idtarefa=? ORDER BY idTarefa");
+            stmt.setInt(1, t.getProjeto().getId());
+            
+            ResultSet rs = stmt.executeQuery();
+            
+            while(rs.next()){
+                
+                tarefas.add(new Tarefa(rs.getInt("idTarefa"), t.getProjeto(), rs.getString("descricao"), rs.getBoolean("status"), rs.getDate("datainicio"), rs.getDate("datafinal"), rs.getInt("diasconclusao"), rs.getInt("percentual")));
+                
+            }
+            
+            
+        } catch (SQLException ex) {
+            Logger.getLogger(TarefaDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }finally {
+            
+            closeResources(conn, stmt);
+            
+        }
+        
+        return tarefas;
+    }
+    
+    public void adicionaTarefaAssociada(Tarefa t1,Tarefa t2){
+        Connection conn = null;
+        PreparedStatement  stmt = null;
+        conn = DatabaseLocator.getInstance().getConnection();
+        try {
+            stmt = conn.prepareStatement("INSERT INTO tarefaassociada(idtarefa,idtarefaassociada,status) values(?,?,?)");
+            stmt.setInt(1, t1.getId());
+            stmt.setInt(2, t2.getId());
+            stmt.setBoolean(3, t2.isFinished());
+            stmt.executeUpdate();
+        } catch (SQLException ex) {
+            Logger.getLogger(TarefaDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+    }
     
     
     

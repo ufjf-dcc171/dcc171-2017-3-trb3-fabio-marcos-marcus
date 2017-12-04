@@ -47,5 +47,5 @@ public class ProjetoListModel implements ListModel<Projeto> {
     public void removeListDataListener(ListDataListener l) {
         dataListeners.remove(l);
     }
-    
+
 }

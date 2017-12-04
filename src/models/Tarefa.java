@@ -110,8 +110,10 @@ public class Tarefa {
         this.percentual = percentual;
     }
     
-    
-    
-    
+    @Override
+    public String toString(){
+        String feito=this.isFinished()?"Feito":"Pendente";
+        return this.descricao+" ("+feito+")";
+    }
     
 }
