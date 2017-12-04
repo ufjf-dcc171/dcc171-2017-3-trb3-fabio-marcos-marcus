@@ -17,17 +17,19 @@ import percistence.TarefaDAO;
  */
 public class JanelaTarefas extends javax.swing.JFrame {
     Tarefa tarefa = null;
+    janelaTarefa janela = null;
     /**
      * Creates new form JanelaTarefas
      */
-    public JanelaTarefas(Tarefa tarefa) {
+    public JanelaTarefas(Tarefa tarefa,janelaTarefa janela) {
         initComponents();
         this.tarefa=tarefa;
         populaTarefas();
+        this.janela=janela;
     }
     
     public void populaTarefas(){
-        ArrayList<Tarefa> tarefas = TarefaDAO.getInstance().getTarefas(tarefa.getProjeto(),"");
+        ArrayList<Tarefa> tarefas = TarefaDAO.getInstance().getTarefas(tarefa.getProjeto(),"",false);
         listTarefas.setModel(new TarefaListModel(tarefas));
     }
 
@@ -58,6 +60,11 @@ public class JanelaTarefas extends javax.swing.JFrame {
         });
 
         jButton2.setText("Cancelar");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -93,8 +100,17 @@ public class JanelaTarefas extends javax.swing.JFrame {
         Tarefa t = listTarefas.getSelectedValue();
         if(t!=null && tarefa.getId()!=t.getId()){
             TarefaDAO.getInstance().adicionaTarefaAssociada(tarefa, t);
+            janela.populaTarefasAssociada();
+            setVisible(false);
+            dispose();
+            
         }
     }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        setVisible(false);
+        dispose();
+    }//GEN-LAST:event_jButton2ActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

@@ -53,7 +53,10 @@ public class TarefaDAO {
                 stmt.setBoolean(7, tarefa.isFinished());
                 stmt.setInt(8, tarefa.getId());
                 stmt.executeUpdate();
-                
+                stmt = conn.prepareStatement("UPDATE tarefaassociada SET status=? WHERE idtarefaassociada=?");
+                stmt.setBoolean(1, !tarefa.isFinished());
+                stmt.setInt(2, tarefa.getId());
+                stmt.executeUpdate();
                 
             }else{
                 
@@ -115,7 +118,7 @@ public class TarefaDAO {
         return tarefa;
     }
     
-    public ArrayList<Tarefa> getTarefas(Projeto proj,String view){
+    public ArrayList<Tarefa> getTarefas(Projeto proj,String view,Boolean possiveisConcluir){
         Connection conn = null;
         PreparedStatement  stmt = null;
         ArrayList<Tarefa> tarefas=new ArrayList<>();
@@ -141,7 +144,12 @@ public class TarefaDAO {
             
             while(rs.next()){
                 
-                tarefas.add(new Tarefa(rs.getInt("idTarefa"), proj, rs.getString("descricao"), rs.getBoolean("status"), rs.getDate("datainicio"), rs.getDate("datafinal"), rs.getInt("diasconclusao"), rs.getInt("percentual")));
+                Tarefa tarefa = new Tarefa(rs.getInt("idTarefa"), proj, rs.getString("descricao"), rs.getBoolean("status"), rs.getDate("datainicio"), rs.getDate("datafinal"), rs.getInt("diasconclusao"), rs.getInt("percentual"));
+                
+                if(!possiveisConcluir || podeConcluir(tarefa)){
+                    
+                    tarefas.add(tarefa);
+                }
                 
             }
             
@@ -194,8 +202,8 @@ public class TarefaDAO {
             
             conn = DatabaseLocator.getInstance().getConnection();
 
-            stmt = conn.prepareStatement("SELECT tarefa.* FROM tarefaassociada LEFT JOIN tarefa ON tarefa.idTarefa=tarefaAssociada.idtarefaassociada WHERE idtarefa=? ORDER BY idTarefa");
-            stmt.setInt(1, t.getProjeto().getId());
+            stmt = conn.prepareStatement("SELECT tarefa.* FROM tarefaassociada LEFT JOIN tarefa ON tarefa.idTarefa=tarefaAssociada.idtarefaassociada WHERE tarefaAssociada.idtarefa=?");
+            stmt.setInt(1, t.getId());
             
             ResultSet rs = stmt.executeQuery();
             
@@ -233,8 +241,39 @@ public class TarefaDAO {
 
     }
     
-    
-    
+    public boolean podeConcluir(Tarefa t){
+        Connection conn = null;
+        PreparedStatement  stmt = null;
+        boolean podeConcluir=true;
+        try {
+            
+            conn = DatabaseLocator.getInstance().getConnection();
+            
+            stmt = conn.prepareStatement("SELECT COUNT(*) As Total FROM tarefaassociada WHERE idTarefa=? AND status=false");
+            System.out.println(t.getId());
+            stmt.setInt(1, t.getId());
+            
+            ResultSet rs = stmt.executeQuery();
+            
+            while(rs.next()){
+                int total = rs.getInt("Total");
+                
+                System.out.println(total);
+                
+                if(total>0){
+                    podeConcluir=false;
+                }
+            }
+            
+        } catch (SQLException ex) {
+            Logger.getLogger(TarefaDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }finally {
+            
+            closeResources(conn, stmt);
+            
+        }
+        return podeConcluir;
+    }
     
     public void closeResources(Connection conn, Statement st){
         try {

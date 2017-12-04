@@ -157,6 +157,9 @@
       <Properties>
         <Property name="text" type="java.lang.String" value="Somente tarefas que podem ser feitas"/>
       </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="checkDisponiveisActionPerformed"/>
+      </Events>
     </Component>
   </SubComponents>
 </Form>

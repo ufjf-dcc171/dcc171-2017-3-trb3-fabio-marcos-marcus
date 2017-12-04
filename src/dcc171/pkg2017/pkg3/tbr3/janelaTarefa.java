@@ -46,12 +46,18 @@ public class janelaTarefa extends javax.swing.JFrame {
             percentual.setText(Integer.toString(t.getPercentual()));
             diasConclusao.setText(Integer.toString(t.getDiasConclusao()));
             feito.setSelected(t.isFinished());
+            populaTarefasAssociada();
         }else{
         
             tarefa=new Tarefa(p);
         
         }
         
+    }
+    
+    public void populaTarefasAssociada(){
+        ArrayList<Tarefa> tarefas=TarefaDAO.getInstance().getTarefasAssocidas(this.tarefa);
+        lstTarefasAssociadas.setModel(new TarefaListModel(tarefas));
     }
     
     
@@ -245,7 +251,7 @@ public class janelaTarefa extends javax.swing.JFrame {
     }//GEN-LAST:event_btnCancelaTarefaActionPerformed
 
     private void btnAddTarefaAssociadaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddTarefaAssociadaActionPerformed
-        JanelaTarefas janela = new JanelaTarefas(tarefa);
+        JanelaTarefas janela = new JanelaTarefas(tarefa,this);
         janela.setLocationRelativeTo(null);
         janela.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         janela.setVisible(true);

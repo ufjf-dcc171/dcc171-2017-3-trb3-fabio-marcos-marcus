@@ -56,7 +56,7 @@ public class JanelaProjetos extends javax.swing.JFrame {
         
         Projeto selecionado = listaProjetos.getSelectedValue();
         if(selecionado != null){
-            ArrayList<Tarefa> tarefas = TarefaDAO.getInstance().getTarefas(selecionado,comboView.getSelectedItem().toString());
+            ArrayList<Tarefa> tarefas = TarefaDAO.getInstance().getTarefas(selecionado,comboView.getSelectedItem().toString(),checkDisponiveis.isSelected());
             tabelaTarefas.setModel(new TarefaTableModel(tarefas));
         }else{
             tabelaTarefas.setModel( new DefaultTableModel());
@@ -130,6 +130,11 @@ public class JanelaProjetos extends javax.swing.JFrame {
         });
 
         checkDisponiveis.setText("Somente tarefas que podem ser feitas");
+        checkDisponiveis.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                checkDisponiveisActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -201,7 +206,7 @@ public class JanelaProjetos extends javax.swing.JFrame {
     private void btnEditaTarefaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditaTarefaActionPerformed
         Projeto p = listaProjetos.getSelectedValue();
         
-        ArrayList<Tarefa> tarefas = TarefaDAO.getInstance().getTarefas(p,comboView.getSelectedItem().toString());
+        ArrayList<Tarefa> tarefas = TarefaDAO.getInstance().getTarefas(p,comboView.getSelectedItem().toString(),checkDisponiveis.isSelected());
         
         Tarefa t = tarefas.get(tabelaTarefas.getSelectedRow());
         
@@ -218,6 +223,10 @@ public class JanelaProjetos extends javax.swing.JFrame {
     private void comboViewActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_comboViewActionPerformed
         populaTarefas();
     }//GEN-LAST:event_comboViewActionPerformed
+
+    private void checkDisponiveisActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_checkDisponiveisActionPerformed
+        populaTarefas();
+    }//GEN-LAST:event_checkDisponiveisActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
