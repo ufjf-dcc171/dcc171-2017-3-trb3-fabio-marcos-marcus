@@ -41,8 +41,12 @@ public class janelaTarefa extends javax.swing.JFrame {
         
             tarefa=t;
             descricao.setText(t.getDescricao());
-            //dataInicio.setText(t.getInicio().toString());
-            //dataFinal.setText(t.getFim().toString());
+            if(t.getInicio()!=null){
+                dataInicio.setText(sdf.format(t.getInicio()));
+            }
+            if(t.getFim()!=null){
+                dataFinal.setText(sdf.format(t.getFim()));
+            }
             percentual.setText(Integer.toString(t.getPercentual()));
             diasConclusao.setText(Integer.toString(t.getDiasConclusao()));
             feito.setSelected(t.isFinished());
@@ -228,6 +232,7 @@ public class janelaTarefa extends javax.swing.JFrame {
         tarefa.setDescricao(descricao.getText());
         tarefa.setDiasConclusao(Integer.parseInt(diasConclusao.getText()));
         try {
+            System.out.println(dataInicio.getText());
             if(dataInicio.getText().length()>0){
                 tarefa.setInicio(sdf.parse(dataInicio.getText()));
             }

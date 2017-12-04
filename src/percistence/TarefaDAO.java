@@ -11,6 +11,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -24,6 +26,7 @@ import models.Tarefa;
 public class TarefaDAO {
     
     private static TarefaDAO instance = new TarefaDAO();
+    public DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd");
     
     private TarefaDAO(){}
     
@@ -42,12 +45,12 @@ public class TarefaDAO {
         try {
             
             if(tarefa.getId()>0){
-
+                System.out.println(tarefa.getInicio().getTime());
                 stmt = conn.prepareStatement("UPDATE tarefa SET idProjeto=?,descricao=?,datainicio=?,datafinal=?,diasConclusao=?,percentual=?,status=? WHERE idTarefa=?");
                 stmt.setInt(1, tarefa.getProjeto().getId());
                 stmt.setString(2, tarefa.getDescricao());
-                stmt.setDate(3, (Date) tarefa.getInicio());
-                stmt.setDate(4, (Date) tarefa.getFim());
+                stmt.setDate(3, new java.sql.Date(tarefa.getInicio().getTime()));
+                stmt.setDate(4, new java.sql.Date(tarefa.getFim().getTime()));
                 stmt.setInt(5, tarefa.getDiasConclusao());
                 stmt.setInt(6, tarefa.getPercentual());
                 stmt.setBoolean(7, tarefa.isFinished());
@@ -63,8 +66,8 @@ public class TarefaDAO {
                 stmt = conn.prepareStatement("INSERT INTO tarefa (idProjeto,descricao,datainicio,datafinal,diasConclusao,percentual,status) values (?,?,?,?,?,?,?)",Statement.RETURN_GENERATED_KEYS);
                 stmt.setInt(1, tarefa.getProjeto().getId());
                 stmt.setString(2, tarefa.getDescricao());
-                stmt.setDate(3, (Date) tarefa.getInicio());
-                stmt.setDate(4, (Date) tarefa.getFim());
+                stmt.setDate(3, new java.sql.Date(tarefa.getInicio().getTime()));
+                stmt.setDate(4, new java.sql.Date(tarefa.getFim().getTime()));
                 stmt.setInt(5, tarefa.getDiasConclusao());
                 stmt.setInt(6, tarefa.getPercentual());
                 stmt.setBoolean(7, tarefa.isFinished());
