@@ -316,7 +316,7 @@ public class TarefaDAO {
         try {
             
             conn = DatabaseLocator.getInstance().getConnection();
-            System.out.println(tarefa.getId());
+
             stmt = conn.prepareStatement("SELECT usuario.* FROM usuariotarefa LEFT JOIN usuario ON usuario.idUsuario=usuariotarefa.idUsuario WHERE usuariotarefa.idtarefa=?");
             stmt.setInt(1, tarefa.getId());
             
