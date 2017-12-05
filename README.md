@@ -5,6 +5,14 @@ Marcos Roberto Chindelar de Olvieira Leite - 201165248C -Ciência da computaçã
 
 Marcus Vinicius da Silva - 201365178C - Ciência da computação
 
+## O sistema
+
+O sistema foi projetado para gerenciar projetos utilizando tarefas, sendo que o projeto pode ter nenhuma ou várias tarefas.
+
+Uma tarefa sempre está associada a um projeto, e pode ter nenhuma ou várias tarefas associadas. Uma tarefa só pode ser marcada como concluída se todas as tarefas associadas já estiverem feitas.
+
+O sistema permite o cadastramento de usuários e uma tarefa pode ter nenhum ou vários usuários.
+
 ## Modelo de dados
 
 Foram utilizadas 3 classes principais para modelar o trabalho
