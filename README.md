@@ -3,7 +3,7 @@ Fabio Henrique Neves Reis Ribeiro - 201135013 -Ciência da computação
 
 Marcos Roberto Chindelar de Olvieira Leite - 201165248C -Ciência da computação
 
-Marcus Vinicius da Silva - 201365178C - Ciência da Computação
+Marcus Vinicius da Silva - 201365178C - Ciência da computação
 
 ## Modelo de dados
 
@@ -25,6 +25,8 @@ Foram utilizadas 3 classes principais para modelar o trabalho
 * Usuario
   * id - ID gerado no BD
   * nome - Nome do usuário
+
+Além dessas classes foram criados um listModel para tarefa, usuario e projeto e um tableModel para tarefas.
 
 ## Banco de dados
 
