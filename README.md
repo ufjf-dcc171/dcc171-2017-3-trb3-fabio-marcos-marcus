@@ -64,3 +64,9 @@ Os campos em negrito, indicam chave primária
 * UsuarioTarefa
   * **idTarefa** (inteiro)
   * **idUsuario** (inteiro)
+  
+  ## Melhorias futuras
+  
+  * Melhorar o modo como o usuário entra com os dados, tormando o sistema mais agradável e intuitivo.
+  * Colocar mais alertas para indicar o que pode ou não ser feito.
+  
