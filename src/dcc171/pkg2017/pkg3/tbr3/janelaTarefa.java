@@ -348,6 +348,7 @@ public class janelaTarefa extends javax.swing.JFrame {
         }else{
             JOptionPane.showMessageDialog(new JFrame(), "A descrição da tarefa não pode ficar em branco.", "Erro",JOptionPane.ERROR_MESSAGE);            
         }
+        janelaProj.listaProjetos.updateUI();
     }//GEN-LAST:event_btnSalvaTarefaActionPerformed
 
     public void exibeUsuarios(){

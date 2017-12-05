@@ -63,6 +63,7 @@ public class JanelaProjetos extends javax.swing.JFrame {
         }else{
             tabelaTarefas.setModel( new DefaultTableModel());
         }
+        
     }
 
     /**
@@ -172,7 +173,7 @@ public class JanelaProjetos extends javax.swing.JFrame {
                         .addComponent(btnEditaTarefa)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(btnCriaTarefa))
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 507, Short.MAX_VALUE)
+                    .addComponent(jScrollPane1)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(comboView, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
@@ -294,7 +295,7 @@ public class JanelaProjetos extends javax.swing.JFrame {
     private javax.swing.JButton jButton2;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane3;
-    private javax.swing.JList<Projeto> listaProjetos;
+    public javax.swing.JList<Projeto> listaProjetos;
     private javax.swing.JButton removeTarefa;
     private javax.swing.JTable tabelaTarefas;
     // End of variables declaration//GEN-END:variables
